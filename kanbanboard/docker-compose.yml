@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  app:
+    image: ${KANBOARD_IMAGE:-kanboard/kanboard:latest}
+    container_name: kanboard
+    restart: always
+    ports:
+     - "8082:80"
+     - "443:443"
+    volumes:
+     - data:/var/www/app/data
+     - plugins:/var/www/app/plugins
+     - certs:/etc/nginx/ssl
+    environment:
+      DATABASE_URL: postgres://kanboard:kanboard-secret@postgres:5432/kanboard
+    networks:
+      - postgres-net
+
+volumes:
+  data:
+    driver: local
+  plugins:
+    driver: local
+  certs:
+    driver: local
+
+networks:
+  postgres-net:
+    external: true

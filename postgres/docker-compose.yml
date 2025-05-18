@@ -2,6 +2,7 @@
 version: '3.9'
 services:
   db:
+    container_name: postgres
     image: postgres
     restart: always
     shm_size: 128mb
@@ -9,8 +10,15 @@ services:
       POSTGRES_PASSWORD: example
     ports:
       - 5432:5432  # Exposes PostgreSQL port
+    networks:
+      - postgres-net
   adminer:
     image: adminer
     restart: always
     ports:
       - 8081:8080
+    networks:
+      - postgres-net
+networks:
+  postgres-net:
+    external: true
